@@ -1,0 +1,40 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pyfatura"
+version = "0.1.0"
+description = "GİB e-Arşiv Portal Python istemcisi — Türkiye e-fatura oluşturma, imzalama ve sorgulama"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+authors = [
+    { name = "Ahmet Elgun" },
+]
+keywords = ["efatura", "e-fatura", "e-arsiv", "fatura", "gib", "turkey", "invoice"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Office/Business :: Financial",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
+]
+dependencies = [
+    "httpx>=0.27",
+]
+
+[project.urls]
+Homepage = "https://github.com/ahmetelgun/pyfatura"
+Repository = "https://github.com/ahmetelgun/pyfatura"
+Issues = "https://github.com/ahmetelgun/pyfatura/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["pyfatura"]
