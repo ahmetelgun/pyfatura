@@ -132,6 +132,11 @@ class EArsivClient:
         )
         response.raise_for_status()
         result = response.json()
+        if result.get("error"):
+            msg = result.get("messages", [{}])[0].get("text", "Bilinmeyen hata")
+            raise Exception(f"GİB Giriş Hatası: {msg}")
+        if "token" not in result:
+            raise Exception(f"Giriş başarısız, token alınamadı. Yanıt: {result}")
         self._token = result["token"]
         return self._token
 
