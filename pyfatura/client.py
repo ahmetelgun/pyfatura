@@ -175,7 +175,7 @@ class EArsivClient:
         # İnteraktif Vergi Dairesi kullanıcıları için otomatik fallback (hangiTip="5000/30000")
         if (
             isinstance(result.get("data"), str)
-            and "fatura kesemez" in result["data"]
+            and "fatura kesemez" in result["data"].lower()
             and invoice.hangi_tip == "Buyuk"
         ):
             invoice.hangi_tip = "5000/30000"
