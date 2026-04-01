@@ -171,6 +171,17 @@ class EArsivClient:
         data = invoice.to_gib_dict(invoice_uuid)
         cmd, page = _COMMANDS["create_draft_invoice"]
         result = self._run_command(cmd, page, data)
+
+        # İnteraktif Vergi Dairesi kullanıcıları için otomatik fallback (hangiTip="5000/30000")
+        if (
+            isinstance(result.get("data"), str)
+            and "fatura kesemez" in result["data"]
+            and invoice.hangi_tip == "Buyuk"
+        ):
+            invoice.hangi_tip = "5000/30000"
+            data = invoice.to_gib_dict(invoice_uuid)
+            result = self._run_command(cmd, page, data)
+
         return {"date": invoice.date, "uuid": invoice_uuid, **result}
 
     def get_all_invoices_by_date_range(

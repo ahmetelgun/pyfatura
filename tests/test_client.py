@@ -80,3 +80,31 @@ class TestContextManager:
     def test_context_manager(self):
         with EArsivClient(test_mode=True) as client:
             assert client.token is None
+
+class TestCreateDraftInvoice:
+    def test_interaktif_fallback(self, client, httpx_mock):
+        client._token = "test-token-123"
+        invoice = Invoice(
+            date="01/04/2026",
+            time="12:00:00",
+            items=[InvoiceItem(name="Test", quantity=1, unit_price=10.0, vat_rate=20)],
+        )
+
+        # Ilk istek basarisiz (Interaktif kural ihlali)
+        httpx_mock.add_response(
+            url=f"{client._base_url}/earsiv-services/dispatch",
+            json={"data": "Bu mükellef (VKN/TCKN: 111) e-Arşiv Portal Fatura'nın ekranından fatura kesemez."},
+        )
+
+        # Ikinci istek basarili
+        httpx_mock.add_response(
+            url=f"{client._base_url}/earsiv-services/dispatch",
+            json={"data": "Faturanız başarıyla oluşturulmuştur."},
+        )
+
+        result = client.create_draft_invoice(invoice)
+
+        assert invoice.hangi_tip == "5000/30000"
+        assert result["data"] == "Faturanız başarıyla oluşturulmuştur."
+        requests = httpx_mock.get_requests()
+        assert len(requests) == 2
