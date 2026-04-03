@@ -179,6 +179,9 @@ class EArsivClient:
             and invoice.hangi_tip == "Buyuk"
         ):
             invoice.hangi_tip = "5000/30000"
+            if invoice.invoice_type == "5000/30000":
+                invoice.invoice_type = "SATIS"
+            
             data = invoice.to_gib_dict(invoice_uuid)
             result = self._run_command(cmd, page, data)
 

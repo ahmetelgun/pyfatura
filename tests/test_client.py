@@ -105,6 +105,7 @@ class TestCreateDraftInvoice:
         result = client.create_draft_invoice(invoice)
 
         assert invoice.hangi_tip == "5000/30000"
+        assert invoice.invoice_type == "SATIS"
         assert result["data"] == "Faturanız başarıyla oluşturulmuştur."
         requests = httpx_mock.get_requests()
         assert len(requests) == 2
